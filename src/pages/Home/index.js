@@ -1,84 +1,48 @@
-import React from 'react'
+import React, { Component } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
+import { formatPrice } from '../../util/format';
+import api from '../../services/api';
 
 import { ProductList } from './styles';
 
-export default function Home() {
-  return (
-    <ProductList>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-puma-cell-aether-sl-plus-masculino/38/NWG-0510-038/NWG-0510-038_detalhe1.jpg?ts=1588846174?ims=240x240" alt="Product"/>
-        <strong>Tênis ChoShoes</strong>
-        <span>R$599.99</span>
+export default class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+    };
+  }
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#FFF" size={16}/> 3
-          </div>
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-puma-cell-aether-sl-plus-masculino/38/NWG-0510-038/NWG-0510-038_detalhe1.jpg?ts=1588846174?ims=240x240" alt="Product"/>
-        <strong>Tênis ChoShoes</strong>
-        <span>R$ 599.99</span>
+  async componentDidMount() {
+    const response = await api.get('products');
+    const data = response.data.map((product) => ({
+      ...product,
+      priceFormatted: formatPrice(product.price),
+    }));
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#FFF" size={16}/> 3
-          </div>
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-puma-cell-aether-sl-plus-masculino/38/NWG-0510-038/NWG-0510-038_detalhe1.jpg?ts=1588846174?ims=240x240" alt="Product"/>
-        <strong>Tênis ChoShoes</strong>
-        <span>R$ 599.99</span>
+    this.setState({ products: data });
+  }
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#FFF" size={16}/> 3
-          </div>
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-puma-cell-aether-sl-plus-masculino/38/NWG-0510-038/NWG-0510-038_detalhe1.jpg?ts=1588846174?ims=240x240" alt="Product"/>
-        <strong>Tênis ChoShoes</strong>
-        <span>R$ 599.99</span>
+  render() {
+    const { products } = this.state;
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#FFF" size={16}/> 3
-          </div>
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-puma-cell-aether-sl-plus-masculino/38/NWG-0510-038/NWG-0510-038_detalhe1.jpg?ts=1588846174?ims=240x240" alt="Product"/>
-        <strong>Tênis ChoShoes</strong>
-        <span>R$ 599.99</span>
+    return (
+      <ProductList>
+        {products.map((product) => (
+          <li key={product.id}>
+            <img src={product.image} alt={product.title} />
+            <strong>{product.title}</strong>
+            <span>{product.priceFormatted}</span>
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#FFF" size={16}/> 3
-          </div>
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-puma-cell-aether-sl-plus-masculino/38/NWG-0510-038/NWG-0510-038_detalhe1.jpg?ts=1588846174?ims=240x240" alt="Product"/>
-        <strong>Tênis ChoShoes</strong>
-        <span>R$ 599.99</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#FFF" size={16}/> 3
-          </div>
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-
-    </ProductList>
-  )
+            <button type="button">
+              <div>
+                <MdAddShoppingCart color="#FFF" size={16} /> 3
+              </div>
+              <span>Adicionar ao carrinho</span>
+            </button>
+          </li>
+        ))}
+      </ProductList>
+    );
+  }
 }
