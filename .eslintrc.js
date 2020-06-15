@@ -9,10 +9,6 @@ module.exports = {
     'prettier',
     'prettier/react'
   ],
-  globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
-  },
   parser: 'babel-eslint',
   parserOptions: {
     ecmaFeatures: {
@@ -31,9 +27,10 @@ module.exports = {
       'warn',
       {extensions: ['.jsx', '.js']}
     ],
-    'no-param-reassign': 'off',
     'import/prefer-default-export': 'off',
     'no-console': ['error', { allow : ['tron']}],
+    'no-param-reassign': 'off',
   },
 };
+
 
